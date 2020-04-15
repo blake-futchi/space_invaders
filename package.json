@@ -1,0 +1,14 @@
+{
+  "name": "space_invaders",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/blake-futchi/space_invaders.git",
+  "author": "Blake <blake@futchi.com>",
+  "license": "MIT",
+  "dependencies": {
+    "superstatic": "^6.0.4"
+  },
+  "scripts": {
+		"start": "superstatic src --port 3001"
+	}
+}
