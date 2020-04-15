@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // make user ship move
 
-  function moveShooter(e) {
+  moveShooter = (e) => {
     squares[currentShooterIndex].classList.remove('shooter')
     switch(e.keyCode) {
       case 37:
@@ -57,7 +57,9 @@ document.addEventListener('DOMContentLoaded', () => {
       alienInvaders[i] += direction
     }
     for (let i = 0; i <= alienInvaders.length -1; i++) {
-      squares[alienInvaders[i]].classList.add('invader')
+      if(!alienInvadersTakenDown.includes(i)) {
+        squares[alienInvaders[i]].classList.add('invader')
+      }
     }
 
       //decide a game is over
@@ -72,6 +74,45 @@ document.addEventListener('DOMContentLoaded', () => {
         clearInterval(invaderId)
       }
     }
+    if(alienInvadersTakenDown.length === alienInvaders.length) {
+      resultDisplay.textContent = 'You Win'
+      clearInterval(invaderId)
+    }
   }
   invaderId = setInterval(moveInvaders, 500)
+
+  // shoot at aliens
+  shoot = (e) => {
+    let laserId
+    let currentLaserIndex = currentShooterIndex
+    //move laser from shooter to the alien Invader
+    moveLaser = () => {
+      squares[currentLaserIndex].classList.remove('laser')
+      currentLaserIndex -= width
+      squares[currentLaserIndex].classList.add('laser')
+      if(squares[currentLaserIndex].contains('invader')) {
+        squares[currentLaserIndex].classList.remove('laser')
+        squares[currentLaserIndex].classList.remove('invader')
+        squares[currentLaserIndex].classList.add('boom')
+
+        setTimeout(() => squares[currentLaserIndex].classList.remove('boom'), 250)
+        clearInterval(laserId)
+
+        const alienTakenDown = alienInvaders.indexOf(currentLaserIndex)
+        alienInvadersTakenDown.push(alienTakenDown)
+        result++
+        resultDisplay.textContent = result
+      }
+      if(currentLaserIndex < width) {
+        clearInterval(laserId)
+        setTimeout(() => squares[currentLaserIndex].classList.remove('laser'), 100)
+      }
+    }
+    switch(e.keyCode) {
+      case 32:
+      laserId = setInterval(moveLaser, 100)
+      break
+    }
+  }
+  document.addEventListener('keyup', shoot)
 })
