@@ -17,10 +17,25 @@ document.addEventListener('DOMContentLoaded', () => {
     30, 31, 32, 33, 34, 35, 36, 37, 38, 39
   ]
 
-  //draws the alien ships
+  // draws the alien ships
   alienInvaders.forEach( invader => squares[currentInvaderIndex + invader].classList.add('invader'))
 
   // draw user ship
-
   squares[currentShooterIndex].classList.add('shooter')
+
+  // make user ship move
+
+  function moveShooter(e) {
+    squares[currentShooterIndex].classList.remove('shooter')
+    switch(e.keyCode) {
+      case 37:
+        if(currentShooterIndex % width!== 0) currentShooterIndex -=1
+        break
+      case 39: 
+      if(currentShooterIndex % width , width -1) currentShooterIndex +=1
+      break
+    }
+    squares[currentShooterIndex].classList.add('shooter')
+  }
+  document.addEventListener('keydown', moveShooter)
 })
